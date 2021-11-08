@@ -13,10 +13,6 @@ We separate lifecycle process for application, console commands, and consumers. 
 
 ```bash
 $ npm install
-
-# For linking binary to local node_modules
-# so you can trigger console commands
-$ npm link
 ```
 
 ## Running the app
@@ -35,12 +31,12 @@ $ npm run start:prod
 ## Running Console Commands
 
 ```bash
-# development
-$ npx aloof [command]
+# make sure you already run build before running this
+$ node ./dist/console [command]
 
 # example
-$ npx aloof health-check
-$ npx aloof order-detail id
+$ node ./dist/console cron-success
+$ node ./dist/console cron-fail
 ```
 
 ## Running Consumers

@@ -6,17 +6,17 @@ import * as dotenv from 'dotenv';
 import { ConsumerModule } from './ui/consumer.module';
 
 const bootstrap = async () => {
-    console.log('consumer');
-
     dotenv.config();
+    const brokers: string[] = process.env.PUBSUB_CLIENT_BROKERS.split(',');
+
     const app = await NestFactory.createMicroservice<MicroserviceOptions>(ConsumerModule, {
         transport: Transport.KAFKA,
         options: {
             client: {
-                brokers: ['localhost:29092'],
+                brokers: brokers,
             },
             consumer: {
-                groupId: 'my-kafka-consumer',
+                groupId: process.env.PUBSUB_CONSUMER_GROUP_ID,
             }
         }
     });

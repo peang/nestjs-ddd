@@ -6,7 +6,7 @@ import { IOrderRepository } from "src/domain/repositories/order-repository.inter
 import { OrderItem } from "src/domain/value_objects/order/order-item.vo";
 import { OrderStatus } from "src/domain/value_objects/order/order-status.vo";
 import { RepositoryHelper } from "../helpers/repository.helper";
-import { OrderModel } from "../models/order.sql";
+import { OrderModel } from '../models/order.sql';
 import { OrderSQL } from "../types/model";
 import { OrderItemSQL } from "../types/vo";
 
@@ -19,7 +19,7 @@ export class OrderRepository implements IOrderRepository {
     constructor(
         @Inject('SEQUELIZE') private readonly sequelize: Sequelize,
     ) { }
-    
+
     // Sample when persisting as Row for SQL DB
     public sqlBuilder(orderDomain: Order): OrderSQL {
         return {
@@ -43,7 +43,7 @@ export class OrderRepository implements IOrderRepository {
         return Order.load(
             order.id,
             items,
-            OrderStatus.create(order.status),
+            OrderStatus.deserialize(order.status),
             order.created_at,
             order.updated_at,
         )
@@ -51,11 +51,13 @@ export class OrderRepository implements IOrderRepository {
 
     public async persist(order: Order): Promise<void> {
         // This only sample of using transactions
-        const t = await this.sequelize.transaction();
 
         const orderSql = this.sqlBuilder(order);
 
-        await OrderModel.create(orderSql, { transaction: t})
+        const t = await this.sequelize.transaction();
+
+        await OrderModel.create(orderSql, { transaction: t })
+
 
         await t.commit();
     }

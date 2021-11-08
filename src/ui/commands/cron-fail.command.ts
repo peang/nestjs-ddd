@@ -1,15 +1,9 @@
 import { Command, CommandRunner } from 'nest-commander';
-import { BaseCommand } from './base.command';
+import { BaseCommand } from '../../commons/ui/base.command';
 
-@Command({ name: 'cron-fail'})
+@Command({ name: 'cron-fail' })
 export class CronFailCommand extends BaseCommand implements CommandRunner {
-    public async run(passedParams: string[], options?: Record<string, any>): Promise<void> {
-        this.start('cron-fail');
-        
-        try {
-            throw new Error();
-        } catch (err) {
-            this.fail(JSON.stringify(err));
-        }
+    public async run(passedParams: string[], options?: Record<string, any>): Promise<any> {
+        throw new Error('error')
     }
 }

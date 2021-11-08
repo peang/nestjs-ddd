@@ -5,20 +5,22 @@ export type OrderDocument = Order & Document;
 
 @Schema()
 export class Order {
-  @Prop()
-  id: string;
+    @Prop()
+    id: string;
 
-  @Prop()
-  items: Record<string, any>[];
+    @Prop()
+    items: Record<string, any>[];
 
-  @Prop()
-  status: number;
+    @Prop()
+    status: number;
 
-  @Prop()
-  created_at: Date;
+    @Prop()
+    created_at: Date;
 
-  @Prop()
-  updated_at: Date;
+    @Prop()
+    updated_at: Date;
+
+
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

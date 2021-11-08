@@ -5,8 +5,8 @@ import { OrderDetailService } from 'src/application/services/orders/order-detail
 import { OrderListService } from 'src/application/services/orders/order-list.service';
 import { IApiResponse } from 'src/application/types/app';
 import { Order } from 'src/domain/entities/order.entities';
-import ResponseBuilder from '../helpers/response-builder';
-import ResponseCode from '../helpers/response-code';
+import ResponseBuilder from '../../commons/ui/response.builder';
+import ResponseCode from '../helpers/response.code';
 import { OrderDetailRequestAdapter } from '../request-adapters/order/order-detail.request-adapter';
 import { OrderListRequestAdapter } from '../request-adapters/order/order-list.request-adapter';
 import { OrderTransformer } from '../transformers/order.transformer';
@@ -28,7 +28,7 @@ export class OrderController {
 
         const order: Order = await this.orderCreateService.execute(dto);
 
-        return ResponseBuilder(ResponseCode.ORDER_CREATED, OrderTransformer.transformDetail(order))
+        return ResponseBuilder(ResponseCode.ORDER_CREATED, new OrderTransformer(), order)
     }
 
     @Get()
@@ -37,7 +37,7 @@ export class OrderController {
 
         const data = await this.orderListService.execute(dto);
 
-        return ResponseBuilder(ResponseCode.ORDER_LIST, OrderTransformer.transformList(data.data), data.meta)
+        return ResponseBuilder(ResponseCode.ORDER_LIST, new OrderTransformer('list'), data.data, data.meta)
     }
 
     @Get('/:id')
@@ -46,9 +46,9 @@ export class OrderController {
 
         const order: Order | null = await this.orderDetailService.execute(dto);
         if (!order) {
-            return ResponseBuilder(ResponseCode.ORDER_NOT_FOUND, {})
+            return ResponseBuilder(ResponseCode.ORDER_NOT_FOUND)
         }
 
-        return ResponseBuilder(ResponseCode.ORDER_DETAIL, OrderTransformer.transformDetail(order))
+        return ResponseBuilder(ResponseCode.ORDER_DETAIL, new OrderTransformer('detail'), order)
     }
 }

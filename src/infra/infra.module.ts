@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Sequelize } from 'sequelize-typescript';
 import { Order, OrderSchema } from './models/order.schema';
 import { OrderModel } from './models/order.sql';
-import { OrderRepository2 } from './repositories/order-repository.sample-schema';
+import { OrderRepository } from './repositories/order-repository.sample-sql';
 
 const providers = [
     {
@@ -24,7 +24,7 @@ const providers = [
     },
     {
         provide: 'OrderRepositoryInterface',
-        useClass: OrderRepository2,
+        useClass: OrderRepository,
     }
 ]
 @Module({

@@ -1,38 +1,44 @@
 import { CallHandler, ExecutionContext, HttpException, Injectable, InternalServerErrorException, NestInterceptor } from '@nestjs/common';
 import { catchError, Observable } from 'rxjs';
-import { SinbadInternalServerErrorException } from '../errors/SinbadInternalServerErrorException';
+import { SinbadInternalServerErrorException } from 'src/commons/ui/errors/SinbadInternalServerErrorException';
+import { SinbadGetHeaders } from '../decorators/sinbad-header.decorator';
+import { LoggerInterceptor } from './logger.interceptor';
 
 @Injectable()
 export class ErrorInterceptor implements NestInterceptor {
-    errorHandler(error) {
-        console.log(error)
+    private logger: LoggerInterceptor;
+
+    constructor() {
+        this.logger = new LoggerInterceptor();
     }
+
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-        console.log('ERROR');
+        const now = Date.now();
+
         return next
             .handle()
             .pipe(
-                catchError((err) => {
-                    console.log(err);
-                    
+                catchError((err) => {                    
+                    const processRequest = Date.now() - now;
+                    const headers = SinbadGetHeaders();
+
+                    this.logger.logError(
+                        headers.requestId,
+                        processRequest,
+                        err.message,
+                        JSON.stringify(err.stack)
+                    )
                     if (err instanceof HttpException) {
                         if (
                             err instanceof InternalServerErrorException
-                            ) {
-                            // log to sentry before throwing error
-
+                        ) {
                             throw new SinbadInternalServerErrorException();
                         } else {
-                            // if other than 5xx not handled
-
                             throw err;
                         }
                     } else {
-                        // log to sentry before throwing error
-
                         throw new SinbadInternalServerErrorException();
                     }
-
                 }),
             );
     }

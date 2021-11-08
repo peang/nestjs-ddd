@@ -2,6 +2,7 @@ import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nes
 import * as os from 'os';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
 @Injectable()
 export class LoggerInterceptor implements NestInterceptor {
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
@@ -27,7 +28,7 @@ export class LoggerInterceptor implements NestInterceptor {
 
         return next
             .handle()
-            .pipe(
+            .pipe(        
                 map((data) => {
                     const processRequest = Date.now() - now;
                     this.logResponse(
@@ -64,7 +65,7 @@ export class LoggerInterceptor implements NestInterceptor {
             timestamp: new Date()
         };
 
-        this.log(JSON.stringify(log))
+        this.log(log);
     }
 
     logResponse(
@@ -87,7 +88,7 @@ export class LoggerInterceptor implements NestInterceptor {
             timestamp: new Date()
         };
 
-        this.log(JSON.stringify(log))
+        this.log(log);
     }
 
     logCron(
@@ -108,23 +109,48 @@ export class LoggerInterceptor implements NestInterceptor {
             timestamp: new Date()
         };
 
-        this.log(JSON.stringify(log))
+        this.log(log);
     }
 
-    logConsumer() {
+    logConsumer(
+        requestId: string,
+        topicName: string,
+        topicPayload: string,
+        processingTime: number,
+    ) {
         const log = {
-            logType: "event_publish",
+            logType: "event_consume",
             serviceName: process.env.SERVICE_NAME,
-            requestId: 'requestId',
-            topicName: 'topicName',
-            topicPayload: 'topicPayload',
+            requestId,
+            topicName,
+            topicPayload,
+            processingTime,
             timestamp: new Date()
         }
 
-        this.log(JSON.stringify(log))
+        this.log(log);
+    }
+
+    logError(
+        requestId: string,
+        processingTime: number,
+        errorMessage: string,
+        errorTrace: string,
+    ) {
+        const log = {
+            logType: "error",
+            requestId,
+            serviceName: process.env.SERVICE_NAME,
+            errorMessage,
+            errorTrace,
+            processingTime,
+            timestamp: new Date()
+        }
+
+        this.log(log);
     }
     
-    log(log) {
-        console.log(log);
+    log(log: Record<string, any>) {
+        console.log(JSON.stringify(log));
     }
 }

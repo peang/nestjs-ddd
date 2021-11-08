@@ -43,7 +43,7 @@ export class OrderRepository2 implements IOrderRepository {
         return Order.load(
             order.id,
             items,
-            OrderStatus.create(order.status),
+            OrderStatus.deserialize(order.status),
             order.created_at,
             order.updated_at,
         )

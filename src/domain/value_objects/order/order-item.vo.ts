@@ -1,6 +1,6 @@
-import { IValueObject } from "../IValueObject";
+import { ValueObject } from "../IValueObject";
 
-export class OrderItem implements IValueObject {
+export class OrderItem implements ValueObject {
     private name: string;
     private qty: number;
     private price: number;
