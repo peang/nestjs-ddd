@@ -5,10 +5,10 @@ import { Order } from "src/domain/entities/order.entities";
 import { IOrderRepository } from "src/domain/repositories/order-repository.interface";
 import { OrderItem } from "src/domain/value_objects/order/order-item.vo";
 import { OrderCreatedEvent } from '../../events/orders/OrderCreatedEvent';
-import { IService } from "../IService";
+import { IUseCase } from "../IUseCase";
 
 @Injectable()
-export class OrderCreateService implements IService {
+export class OrderCreateUseCase implements IUseCase {
     constructor(
         @Inject("OrderRepositoryInterface") private readonly orderRepository: IOrderRepository,
         private eventEmitter: EventEmitter2,

@@ -3,10 +3,10 @@ import { OrderListDTO } from "src/application/dtos/orders/order-list.dto";
 import { IMetaResponse } from "src/application/types/app";
 import { Order } from "src/domain/entities/order.entities";
 import { IOrderRepository } from "src/domain/repositories/order-repository.interface";
-import { IService } from "../IService";
+import { IUseCase } from "../IUseCase";
 
 @Injectable()
-export class OrderListService implements IService {
+export class OrderListUseCase implements IUseCase {
     constructor(
         @Inject("OrderRepositoryInterface")
         private readonly orderRepository: IOrderRepository

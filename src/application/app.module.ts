@@ -5,18 +5,18 @@ import { OrderCreateDTO } from './dtos/orders/order-create.dto';
 import { OrderDetailDTO } from './dtos/orders/order-detail.dto';
 import { OrderListDTO } from './dtos/orders/order-list.dto';
 import { OrderCreatedEventHandler } from './event-handlers/orders/order-created.event-handler';
-import { OrderCreateService } from './services/orders/order-create.service';
-import { OrderDetailService } from './services/orders/order-detail.service';
-import { OrderListService } from './services/orders/order-list.service';
+import { OrderCreateUseCase } from './use-cases/orders/order-create.use-case';
+import { OrderDetailUseCase } from './use-cases/orders/order-detail.use-case';
+import { OrderListUseCase } from './use-cases/orders/order-list.use-case';
 
 const providers = [
     OrderCreateDTO,
     OrderDetailDTO,
     OrderListDTO,
 
-    OrderCreateService,
-    OrderDetailService,
-    OrderListService,
+    OrderCreateUseCase,
+    OrderDetailUseCase,
+    OrderListUseCase,
 
     OrderCreatedEventHandler,
 ];

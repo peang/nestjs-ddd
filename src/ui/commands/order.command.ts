@@ -1,6 +1,6 @@
 import { Command, CommandRunner } from 'nest-commander';
 import responseBuilder from 'src/commons/ui/response.builder';
-import { OrderDetailService } from '../../application/services/orders/order-detail.service';
+import { OrderDetailUseCase } from '../../application/use-cases/orders/order-detail.use-case';
 import { BaseCommand } from '../../commons/ui/base.command';
 import { Order } from '../../domain/entities/order.entities';
 import responseCode from '../helpers/response.code';
@@ -13,7 +13,7 @@ import { OrderTransformer } from '../transformers/order.transformer';
 export class OrderCommand extends BaseCommand implements CommandRunner {
     constructor(
         private readonly orderDetailRequestAdapter: OrderDetailRequestAdapter, // DTO via Request Adapter
-        private readonly orderDetailService: OrderDetailService,
+        private readonly orderDetailService: OrderDetailUseCase,
     ) {
         super();
     }

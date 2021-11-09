@@ -1,5 +1,5 @@
 import { DTOAdapter } from "../dtos/DTOAdapter";
 
-export interface IService {
+export interface IUseCase {
     execute(dto: DTOAdapter): Promise<any>;
 }

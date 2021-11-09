@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { OrderCreateDTO } from 'src/application/dtos/orders/order-create.dto';
-import { OrderCreateService } from 'src/application/services/orders/order-create.service';
-import { OrderDetailService } from 'src/application/services/orders/order-detail.service';
-import { OrderListService } from 'src/application/services/orders/order-list.service';
+import { OrderCreateUseCase } from 'src/application/use-cases/orders/order-create.use-case';
+import { OrderDetailUseCase } from 'src/application/use-cases/orders/order-detail.use-case';
+import { OrderListUseCase } from 'src/application/use-cases/orders/order-list.use-case';
 import { IApiResponse } from 'src/application/types/app';
 import { Order } from 'src/domain/entities/order.entities';
 import ResponseBuilder from '../../commons/ui/response.builder';
@@ -15,11 +15,11 @@ import { OrderTransformer } from '../transformers/order.transformer';
 export class OrderController {
     constructor(
         private readonly orderCreateDto: OrderCreateDTO, // direct DTO (with request adapter)
-        private readonly orderCreateService: OrderCreateService,
+        private readonly orderCreateService: OrderCreateUseCase,
         private readonly orderDetailRequestAdapter: OrderDetailRequestAdapter, // DTO via Request Adapter
-        private readonly orderDetailService: OrderDetailService,
+        private readonly orderDetailService: OrderDetailUseCase,
         private readonly orderListRequestAdapter: OrderListRequestAdapter, // DTO via Request Adapter
-        private readonly orderListService: OrderListService,
+        private readonly orderListService: OrderListUseCase,
     ) { }
 
     @Post()
