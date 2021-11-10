@@ -20,12 +20,11 @@ export class OrderRepository implements IOrderRepository {
         @Inject('SEQUELIZE') private readonly sequelize: Sequelize,
     ) { }
 
-    // Sample when persisting as Row for SQL DB
     public sqlBuilder(orderDomain: Order): OrderSQL {
         return {
             id: orderDomain.getId(),
             items: JSON.stringify(orderDomain.getItems()),
-            status: orderDomain.getStatus().getStatus(),
+            status: orderDomain.getStatus().serialize(),
             created_at: orderDomain.getCreatedAt(),
             updated_at: orderDomain.getUpdatedAt(),
         }
@@ -50,14 +49,11 @@ export class OrderRepository implements IOrderRepository {
     }
 
     public async persist(order: Order): Promise<void> {
-        // This only sample of using transactions
-
         const orderSql = this.sqlBuilder(order);
 
         const t = await this.sequelize.transaction();
 
-        await OrderModel.create(orderSql, { transaction: t })
-
+        await OrderModel.upsert(orderSql, { transaction: t })
 
         await t.commit();
     }
@@ -86,11 +82,15 @@ export class OrderRepository implements IOrderRepository {
             }
         }
 
+        const order = [];
+        if (sort || sortBy) {
+            order.push([sort, sortBy]);
+        }
         const [orders, count]: [Order[], number] = await OrderModel.findAndCountAll({
             offset,
             limit,
             where,
-            order: [sort, sortBy]
+            order
         }).then((data) => {
             return [
                 data.rows.map((order) => this.domainFromSQLBuilder(order)),
@@ -102,5 +102,18 @@ export class OrderRepository implements IOrderRepository {
             data: orders,
             meta: RepositoryHelper.generateMeta(page, perPage, count)
         };
+    }
+
+    public async remove(order: Order): Promise<void> {
+        const t = await this.sequelize.transaction();
+
+        await OrderModel.destroy({
+            where: {
+                id: order.getId()
+            },
+            transaction: t
+        })
+
+        await t.commit();
     }
 }

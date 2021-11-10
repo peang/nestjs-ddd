@@ -2,6 +2,7 @@ import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nes
 import * as os from 'os';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { SinbadGetHeaders } from '../decorators/sinbad-header.decorator';
 
 @Injectable()
 export class LoggerInterceptor implements NestInterceptor {
@@ -9,11 +10,11 @@ export class LoggerInterceptor implements NestInterceptor {
         const now = Date.now();
 
         const req = context.switchToHttp().getRequest();
+        const headers = SinbadGetHeaders();
         const method = req.method;
         const body = req.body;
-        const headers = req.headers;
 
-        const requestId = headers['request_id'];
+        const requestId = headers['x-request-id'];
         const IP = headers['x-forwarded-for'] ? headers['x-forwarded-for'] : req.socket.remoteAddress;
         const fullPath = req.protocol + '://' + os.hostname() + req.url;
 

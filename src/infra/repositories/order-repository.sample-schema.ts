@@ -52,7 +52,7 @@ export class OrderRepository2 implements IOrderRepository {
     public async persist(order: Order): Promise<void> { // this is sample method when persisting a document schema
         const orderDoc = this.documentBuilder(order);
 
-        await this.orderModel.create(orderDoc);
+        await this.orderModel.findOneAndUpdate(orderDoc);
     }
 
     public async findOrderBy(params: any): Promise<Order | null> {
@@ -95,5 +95,11 @@ export class OrderRepository2 implements IOrderRepository {
             data: orders,
             meta: RepositoryHelper.generateMeta(page, perPage, count)
         };
+    }
+
+    public async remove(order: Order): Promise<void> { // this is sample method when persisting a document schema
+        const orderDoc = this.documentBuilder(order);
+
+        await this.orderModel.deleteOne(orderDoc);
     }
 }

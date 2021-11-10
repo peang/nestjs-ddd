@@ -23,7 +23,7 @@ export class ErrorInterceptor implements NestInterceptor {
                     const headers = SinbadGetHeaders();
 
                     this.logger.logError(
-                        headers.requestId,
+                        headers['x-request-id'],
                         processRequest,
                         err.message,
                         JSON.stringify(err.stack)

@@ -27,7 +27,7 @@ export class Order {
         return new Order(
             uuidv4(),
             items,
-            new OrderStatus("new"),
+            OrderStatus.create('new'),
             new Date(),
             new Date(),
         )

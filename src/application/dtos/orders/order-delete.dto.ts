@@ -1,13 +1,18 @@
 import * as Joi from '@hapi/joi';
-import { DTOAdapter } from "src/application/dtos/DTOAdapter";
-import { OrderDetailDTO } from "src/application/dtos/orders/order-detail.dto";
-import { IApiRequest } from "src/application/types/app";
+import { IApiRequest } from 'src/application/types/app';
+import { DTOAdapter } from "../DTOAdapter";
 
-export class OrderDetailRequestAdapter {
-    public async getDTO(payload: IApiRequest): Promise<OrderDetailDTO> {
+export class OrderDeleteDTO extends DTOAdapter {
+    constructor(
+        public readonly id: string,
+    ) {
+        super();
+    }
+
+    public async getPayload(payload: IApiRequest): Promise<OrderDeleteDTO> {
         payload = await DTOAdapter.validate(payload, this.getScheme());
 
-        return new OrderDetailDTO(
+        return new OrderDeleteDTO(
             payload.params.id
         );
     }

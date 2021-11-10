@@ -7,13 +7,8 @@ import { ErrorInterceptor } from 'src/commons/ui/interceptors/error.interceptor'
 import { LoggerInterceptor } from 'src/commons/ui/interceptors/logger.interceptor';
 import { LogController } from './controllers/log.controller';
 import { OrderController } from './controllers/order.controller';
-import { OrderDetailRequestAdapter } from './request-adapters/order/order-detail.request-adapter';
-import { OrderListRequestAdapter } from './request-adapters/order/order-list.request-adapter';
 
-const providers = [
-    OrderListRequestAdapter,
-    OrderDetailRequestAdapter
-];
+const providers = [];
 
 @Module({
     controllers: [

@@ -18,8 +18,8 @@ export default ((
             case 'create':
                 res = transformer.transformCreated(data);
                 break;
-            case 'list':
-                res = transformer.transformList(data, meta);
+                case 'list':
+                    res = transformer.transformList(data, meta);
                 break;
             case 'detail':
                 res = transformer.transformDetail(data)

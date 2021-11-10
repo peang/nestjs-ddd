@@ -1,10 +1,10 @@
 import { Command, CommandRunner } from 'nest-commander';
+import { OrderDetailDTO } from 'src/application/dtos/orders/order-detail.dto';
 import responseBuilder from 'src/commons/ui/response.builder';
 import { OrderDetailUseCase } from '../../application/use-cases/orders/order-detail.use-case';
 import { BaseCommand } from '../../commons/ui/base.command';
 import { Order } from '../../domain/entities/order.entities';
 import responseCode from '../helpers/response.code';
-import { OrderDetailRequestAdapter } from '../request-adapters/order/order-detail.request-adapter';
 import { OrderTransformer } from '../transformers/order.transformer';
 @Command({
     name: 'order-detail',
@@ -12,7 +12,7 @@ import { OrderTransformer } from '../transformers/order.transformer';
 })
 export class OrderCommand extends BaseCommand implements CommandRunner {
     constructor(
-        private readonly orderDetailRequestAdapter: OrderDetailRequestAdapter, // DTO via Request Adapter
+        private readonly orderDetailDTO: OrderDetailDTO,
         private readonly orderDetailService: OrderDetailUseCase,
     ) {
         super();
@@ -23,7 +23,7 @@ export class OrderCommand extends BaseCommand implements CommandRunner {
     public async run(inputs: string[], options?: Record<string, any>): Promise<any> {
         const id = inputs[0];
 
-        const dto = await this.orderDetailRequestAdapter.getDTO({
+        const dto = await this.orderDetailDTO.getPayload({
             params: {
                 id
             }

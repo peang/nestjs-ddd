@@ -10,4 +10,6 @@ export interface IOrderRepository {
     }>;
 
     findOrderBy(params: any): Promise<Order | null>;
+
+    remove(order: Order): Promise<void>;
 }

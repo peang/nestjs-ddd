@@ -1,3 +1,4 @@
+import { BadRequestException } from "@nestjs/common";
 import { ValueObject } from "../IValueObject";
 
 export class OrderItem implements ValueObject {
@@ -34,6 +35,11 @@ export class OrderItem implements ValueObject {
     }
 
     public static create(name, qty, price): OrderItem {
+        if (qty > 20) {
+            // Misal validasi qty item maksimal 20
+            throw new BadRequestException('Maximum Qty is 20')
+        }
+
         return new OrderItem(name, qty, price);
     }
 
