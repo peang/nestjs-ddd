@@ -1,6 +1,6 @@
 ## Description
 
-[Sinbad](https://sinbad.co.id/) [Nest](https://github.com/nestjs/nest) DDD framework TypeScript starter repository.
+[NestJS](https://github.com/nestjs/nest) DDD framework TypeScript starter repository.
 
 why `fastify` ?
 https://stackoverflow.com/questions/47733390/nestjs-vs-plain-express-performance
